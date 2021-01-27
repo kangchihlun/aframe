@@ -5,37 +5,83 @@
   <meta name="description" content="Model Viewer (VR / AR) • A-Frame">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <script src="../../../dist/aframe-master.js"></script>
-  <script src="../../js/info-message.js"></script>
+  <!-- <script src="../../js/info-message.js"></script> -->
   <script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
+  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
   <script src="../../js/hide-on-enter-ar.js"></script>
   <script src="ar-shadows.js"></script>
   <script src="ar-hit-test.js"></script>
   <script src="model-viewer.js"></script>
   <script src="background-gradient.js"></script>
 </head>
-<body>
+<style>
+  .arjs-loader {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-<a-scene
-  renderer="colorManagement: true;"
-  info-message="htmlSrc: #messageText"
-  model-viewer="gltfModel: #triceratops; title: Triceratops">
-  <a-assets>
-    <!--
-      Model source: https://sketchfab.com/3d-models/triceratops-d16aabe33dc24f8ab37e3df50c068265
-      Model author: https://sketchfab.com/VapTor
-      Model license: Sketcfab Standard
+  .arjs-loader div {
+    text-align: center;
+    font-size: 1.25em;
+    color: white;
+  }
+</style>
+
+<body style="margin : 0px; overflow: hidden;">
+  <!-- minimal loader shown until image descriptors are loaded -->
+  <div class="arjs-loader">
+    <div>Loading</div>
+  </div>
+  <a-scene
+    vr-mode-ui="enabled: false;"
+    renderer="logarithmicDepthBuffer: true; colorManagement: true;"
+    embedded
+    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+  >
+    <a-text
+      value="This content will always face you."
+      look-at="[gps-camera]"
+      scale="50 50 50"
+      gps-entity-place="latitude: <add-your-latitude>; longitude: <add-your-longitude>;"
+    ></a-text>
+    <!-- 
+      dino url="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/trex-image/trex" 
+      local nft vase(mialed) url="/examples/assets/nft/vase01/vase01"
+      cors nft vase url="https://arjs-cors-proxy.herokuapp.com/https://raw.githubusercontent.com/kangchihlun/aframe/master/examples/assets/nft/vase01/vase01"
+      local nft car url="/examples/assets/nft/car911/car-porsche911"
     -->
-    <a-asset-item id="triceratops"
-      src="https://cdn.aframe.io/examples/ar/models/triceratops/scene.gltf"
-      response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-
-    <a-asset-item id="reticle"
-      src="https://cdn.aframe.io/examples/ar/models/reticle/reticle.gltf"
-      response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-
-    <img id="shadow" src="shadow.png"></img>
-    <a-asset-item id="messageText" src="message.html"></a-asset-item>
-  </a-assets>
-</a-scene>
+    <a-nft
+      type="nft"
+      url="/examples/assets/nft/vase01/vase01"
+      smooth="true"
+      smoothCount="300"
+      smoothTolerance="0.005"
+      smoothThreshold="1500"
+    >
+      <!-- <a-entity
+        gltf-model="https://arjs-cors-proxy.herokuapp.com/https://raw.githack.com/AR-js-org/AR.js/master/aframe/examples/image-tracking/nft/trex/scene.gltf"
+        scale="5 5 5"
+        position="50 150 0"
+        rotation="270 0 0"
+      > -->
+      <a-entity gltf-model="/examples/assets/models/vase01.glb"
+        scale="12 12 12"
+        position="100 0 -100"
+        rotation="270 0 0"
+      >
+      <a-entity gltf-model="https://cdn.aframe.io/examples/ar/models/reticle/reticle.gltf"></a-entity>  
+    </a-nft>
+    
+    <a-entity camera="active: true" far="100000"></a-entity>
+    <a-light type="point" color="#FFFFE2" intensity="1.5" castShadow="true" position="150 150 0"></a-light>
+    
+  </a-scene>
 </body>
-</html>
